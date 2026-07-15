@@ -1,99 +1,176 @@
-# Hugo PaperMod
+# PexMod Web - Clean & Hyper-Minimalist Blog, Portfolio & Media Client
 
-**A fast, clean, and responsive theme for [Hugo](https://gohugo.io/).**
+**PexMod Web** adalah template web modern, super cepat, dan hyper-minimalist yang dirancang untuk kebutuhan blog, portfolio, dan Telegram MTProto media storage client. Mengambil inspirasi estetika dari Hugo PaperMod yang bersih dan berfokus pada konten, template ini dibangun menggunakan **React 18**, **Vite**, dan **Tailwind CSS** untuk menghadirkan performa Single Page Application (SPA) yang luar biasa.
 
-[![hugo-papermod](https://img.shields.io/badge/Hugo--Themes-@PaperMod-blue)](https://themes.gohugo.io/themes/hugo-papermod/)
-[![Minimum Hugo Version](https://img.shields.io/static/v1?label=Hugo&message=v0.146.0%2B&color=blue&logo=hugo)](https://github.com/gohugoio/hugo/releases/tag/v0.146.0)
-[![Discord](https://img.shields.io/discord/971046860317921340?label=Discord&logo=discord)](https://discord.gg/ahpmTvhVmp)
-
-> Based on [hugo-paper](https://github.com/nanxiaobei/hugo-paper/tree/4330c8b12aa48bfdecbcad6ad66145f679a430b3), with additional features and customization options.
-
-<table>
-	<tbody>
-		<tr>
-			<td>Live Demo</td>
-			<td><a href="https://adityatelange.github.io/hugo-PaperMod/">adityatelange.github.io/hugo-PaperMod</a></td>
-		</tr>
-		<tr>
-			<td>Documentation 📚</td>
-			<td><a href="https://github.com/adityatelange/hugo-PaperMod/wiki">Github Wiki</a></td>
-		</tr>
-		<tr>
-			<td>Example Site Source</td>
-			<td><a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite">exampleSite branch</a></td>
-		</tr>
-		<tr>
-			<td><a href="https://www.star-history.com/adityatelange/hugo-papermod"><img src="https://api.star-history.com/badge?repo=adityatelange/hugo-PaperMod&amp;theme=dark" alt="Star History Rank" /></a></td>
-			<td><a href="https://ko-fi.com/H2H229ZWH"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="ko-fi" /></a></td>
-		</tr>
-	</tbody>
-</table>
-
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/21258296/114303440-bfc0ae80-9aeb-11eb-8cfa-48a4bb385a6d.png" alt="Mockup image" title="Mockup"/>
-</p>
+Template ini sangat cocok digunakan oleh developer, penulis, atau kreator konten yang menginginkan situs web berkelas tinggi tanpa polusi elemen visual atau "AI Slop" (fitur-fitur tidak perlu).
 
 ---
 
-## Features 💥
+## 🎨 Filosofi Desain (Anti-AI Slop)
 
-`☄️ Fast | ☁️ Fluent | 🌙 Smooth | 📱 Responsive`
-
-- **Asset pipeline** -- Hugo's built-in asset generator with fingerprinting, bundling, and minification.
-- **Three layout modes** -- [Regular](https://github.com/adityatelange/hugo-PaperMod/wiki/Features#regular-mode-default-mode), [Home-Info](https://github.com/adityatelange/hugo-PaperMod/wiki/Features#home-info-mode), and [Profile](https://github.com/adityatelange/hugo-PaperMod/wiki/Features#profile-mode).
-- **Light and dark themes** -- Automatic switching based on browser preference, plus a manual toggle.
-- **Multilingual support** -- Includes a built-in language selector.
-- **Search** -- Client-side search powered by Fuse.js.
-- **SEO optimized** -- Open Graph, Twitter Cards, and Schema.org structured data out of the box.
-- **Cover images** -- Per-post cover images with responsive image support.
-- **Table of contents** -- Auto-generated from heading structure.
-- **Multiple authors** -- Native support for multi-author sites.
-- **Social icons and share buttons** -- Configurable social links and per-post sharing.
-- **Breadcrumb navigation**
-- **Post archives and taxonomies**
-- **Code block copy buttons** -- One-click copying with Chroma syntax highlighting.
-- **Related post suggestions**
-- **Zero JS build dependencies** -- No webpack, Node.js, or other tooling required.
-
-| Topic                                                                                             | Description                                     |
-| ------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| **[Installation guide](https://github.com/adityatelange/hugo-PaperMod/wiki/Installation)**        | Detailed installation and update instructions   |
-| **[Features wiki page](https://github.com/adityatelange/hugo-PaperMod/wiki/Features)**            | In-depth explanations of all features           |
-| **[FAQ wiki](https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs)**                          | Common questions and configuration walkthroughs |
-| **[Icons wiki](https://github.com/adityatelange/hugo-PaperMod/wiki/Icons)**                       | Documentation for social icons and share icons  |
-| **[Variables wiki](https://github.com/adityatelange/hugo-PaperMod/wiki/Variables)**               | List of all available template variables        |
-| **[Overiding templates](https://github.com/adityatelange/hugo-PaperMod/wiki/Template_Overrides)** | Guide to customizing templates without forking  |
-| **[Releases](https://github.com/adityatelange/hugo-PaperMod/releases)**                           | Detailed history of releases                    |
+1. **Hiper-Minimalisme & Negative Space**: Mengutamakan kelegaan visual dengan latar belakang solid (`#1d1e20` untuk mode gelap, `#ffffff` untuk mode terang), garis pembatas ultra-tipis, dan menghindari gradasi warna mencolok atau bayangan 3D tebal.
+2. **Fokus pada Tipografi**: Struktur teks yang rapi, rasio kontras warna tinggi yang memenuhi standar PageSpeed, serta penggunaan font monospace (`JetBrains Mono`) untuk data teknis dan metadata.
+3. **Tanpa Distraksi Sistem**: Tidak ada widget indikator uptime berlebihan, status log tiruan, atau elemen hiasan yang tidak memberikan fungsi nyata.
 
 ---
 
-## Performance ☄️
+## 🚀 Fitur Unggulan
 
-PaperMod consistently scores near-perfect results on [Pagespeed Insights](https://pagespeed.web.dev/report?url=https://adityatelange.github.io/hugo-PaperMod/).
-
-<img width="481" height="116" alt="image" src="https://github.com/user-attachments/assets/497d831b-d143-4a46-bc11-b1d7f8ef4a83" />
-
----
-
-## Support 🫶
-
-- Star this repository to show your support.
-- Share PaperMod with others who might find it useful.
-- Sponsor the project on [GitHub Sponsors](https://github.com/sponsors/adityatelange) or [Ko-Fi](https://ko-fi.com/adityatelange).
-
----
-
-## Special Thanks 🌟
-
-- [Highlight.js](https://github.com/highlightjs/highlight.js)
-- [Fuse.js](https://github.com/krisk/fuse)
-- [Feather Icons](https://github.com/feathericons/feather)
-- [Simple Icons](https://github.com/simple-icons/simple-icons)
-- All contributors and supporters
+*   **Garis Gulir Bacaan Super Tipis (Reading Progress Bar)**: Garis horizontal presisi berukuran 2px di bagian paling atas layar yang bergerak secara mulus mengikuti posisi gulir halaman pembaca secara real-time.
+*   **Estimasi Waktu Membaca**: Teks estimasi waktu baca (misal: `3 mnt membaca`) otomatis dihitung dari jumlah kata artikel, ditampilkan dengan font `JetBrains Mono` berukuran kecil di bawah judul artikel.
+*   **Pencarian Pintar dengan Sorotan Dinamis (Smart Search Highlight)**: Setiap kata kunci yang diketik pembaca pada kolom pencarian akan otomatis disorot dengan warna latar belakang pudar yang lembut (`rgba(234, 179, 8, 0.22)`) langsung pada ringkasan deskripsi artikel di hasil pencarian.
+*   **Lokalisasi Multibahasa Lengkap**:
+    *   Mendukung 3 bahasa: **Bahasa Indonesia (`id`)** [Bawaan/Default], **Bahasa Inggris (`en`)**, dan **Bahasa Spanyol (`es`)**.
+    *   Pengalih bahasa (language switcher) minimalis berupa tombol pill teks (`ID | EN | ES`) di sebelah pengalih tema.
+*   **Telegram MTProto Media Client**: Antarmuka terintegrasi yang dioptimalkan untuk menelusuri, memfilter, mencari, dan membagikan koleksi media secara responsif.
+*   **Dual Tema Instan**: Mode gelap (`Dark`) sebagai setelan bawaan dengan tombol pengalih yang mulus ke mode terang (`Light`).
+*   **Performa PageSpeed Maksimal**: Sangat ringan dengan dependensi minimal untuk memastikan loading instan dan skor audit performa 100.
+*   **Persistensi Lokal (localStorage)**: Preferensi bahasa, tema, pencarian, dan artikel yang disimpan otomatis tersimpan dengan aman di browser pengguna.
 
 ---
 
-## Stargazers 📈
+## 📁 Struktur Direktori Proyek
 
-[![Stargazers over time](https://starchart.cc/adityatelange/hugo-PaperMod.svg?background=%23ffffff00&axis=%23858585&line=%236b63ff)](https://starchart.cc/adityatelange/hugo-PaperMod)
+```bash
+pexmod-web/
+├── public/                 # Aset statis publik (logo, favicon, dll.)
+├── src/
+│   ├── data/
+│   │   └── posts.js        # File basis data artikel / postingan blog
+│   ├── locales/
+│   │   ├── id.json         # File lokalisasi Bahasa Indonesia
+│   │   ├── en.json         # File lokalisasi Bahasa Inggris
+│   │   └── es.json         # File lokalisasi Bahasa Spanyol
+│   ├── App.jsx             # Logika utama aplikasi React, routing, dan state
+│   ├── index.css           # Konfigurasi Tailwind CSS dan variabel tema global
+│   └── main.jsx            # Entry point React
+├── index.html              # Template HTML utama
+├── package.json            # Daftar dependensi dan skrip proyek
+└── vite.config.js          # Konfigurasi bundler Vite
+```
+
+---
+
+## ⚙️ Panduan Instalasi & Penggunaan
+
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek ini di mesin lokal Anda atau mendeploy-nya ke server hosting statis.
+
+### Persyaratan Sistem
+Pastikan Anda sudah menginstal:
+*   [Node.js](https://nodejs.org/) (versi 18 ke atas)
+*   NPM (bawaan dari Node.js) atau [Bun](https://bun.sh/) / Yarn.
+
+### 1. Kloning Repositori
+```bash
+git clone https://github.com/username/pexmod-web.git
+cd pexmod-web
+```
+
+### 2. Instal Dependensi
+```bash
+npm install
+# atau jika menggunakan Bun:
+bun install
+```
+
+### 3. Jalankan Server Pengembangan (Development)
+```bash
+npm run dev
+# atau jika menggunakan Bun:
+bun dev
+```
+Buka browser Anda dan akses `http://localhost:3000` (atau port yang ditunjukkan oleh terminal Anda).
+
+### 4. Build untuk Produksi
+Gunakan perintah ini untuk memaketkan kode menjadi file statis siap pakai yang telah dioptimalkan di dalam folder `dist/`.
+```bash
+npm run build
+# atau jika menggunakan Bun:
+bun build
+```
+
+---
+
+## 📝 Panduan Pengelolaan Konten & Kustomisasi
+
+### A. Cara Menambahkan Posting Baru
+Semua data artikel disimpan di `/src/data/posts.js`. Anda cukup menambahkan objek baru di dalam array `posts`:
+
+```javascript
+{
+  id: "judul-artikel-anda",
+  title: "Judul Artikel Menarik",
+  description: "Ringkasan deskripsi pendek artikel Anda yang akan muncul pada daftar pencarian dan halaman utama.",
+  content: `Isi lengkap artikel Anda dalam format Markdown atau HTML mentah.
+  
+## Subheading
+Anda dapat menulis isi posting secara fleksibel menggunakan sintaks standar.`,
+  date: "2026-07-15",
+  formattedDate: "15 Juli 2026",
+  author: "Nama Penulis",
+  tags: ["Teknologi", "Web"],
+  lang: "id" // Sesuaikan bahasa artikel: 'id' | 'en' | 'es'
+}
+```
+
+### B. Cara Mengubah Teks Terjemahan (Localization)
+Jika Anda ingin menambahkan istilah baru atau memodifikasi terjemahan yang ada, Anda dapat membuka file bahasa masing-masing di `/src/locales/`:
+*   `id.json` untuk Bahasa Indonesia
+*   `en.json` untuk Bahasa Inggris
+*   `es.json` untuk Bahasa Spanyol
+
+Contoh struktur dalam `/src/locales/id.json`:
+```json
+{
+  "home": "Beranda",
+  "searchPlaceholder": "Cari artikel...",
+  "readTimeSuffix": "mnt membaca"
+}
+```
+
+### C. Menyesuaikan Variabel Warna & Layout
+Warna latar belakang, teks, batas (border), dan ukuran container utama didefinisikan menggunakan CSS Variables di `/src/index.css`. Anda dapat dengan mudah mengubah nilai ini agar sesuai dengan identitas visual Anda:
+
+```css
+:root {
+  --main-width: 780px;      /* Lebar maksimum area baca artikel */
+  --nav-width: 1024px;      /* Lebar maksimum bar navigasi */
+  --theme: rgb(255, 255, 255); /* Latar belakang mode terang */
+  --primary: rgb(30, 30, 30);  /* Warna teks primer mode terang */
+}
+
+.dark {
+  --theme: rgb(29, 30, 32);    /* Latar belakang mode gelap */
+  --primary: rgb(218, 218, 219); /* Warna teks primer mode gelap */
+}
+```
+
+---
+
+## 🚀 Panduan Deployment (Hosting)
+
+Karena template ini menghasilkan keluaran berupa web statis murni (SPA), Anda bisa meng-host proyek ini secara gratis di berbagai platform populer:
+
+### 1. Vercel
+1. Hubungkan repositori GitHub Anda ke akun Vercel.
+2. Tambahkan proyek baru.
+3. Setel **Framework Preset** menjadi `Vite`.
+4. Klik **Deploy**.
+
+### 2. Netlify
+1. Pilih **New site from Git** di Netlify dashboard.
+2. Pilih repositori Anda.
+3. Atur build command ke `npm run build` dan publish directory ke `dist`.
+4. Klik **Deploy site**.
+
+### 3. GitHub Pages
+Anda dapat mendeploy langsung menggunakan GitHub Actions atau package `gh-pages` dengan mengatur `base` path pada `vite.config.js` jika nama repo Anda bukan root domain.
+
+---
+
+## 📄 Lisensi
+Proyek ini didistribusikan di bawah lisensi **MIT License**. Anda bebas menyalin, memodifikasi, dan menyebarluaskannya baik untuk kepentingan pribadi maupun komersial dengan tetap menyertakan atribusi pembuat aslinya.
+
+---
+
+*Dibuat dengan dedikasi tinggi pada performa, estetika minimalis, dan pengalaman membaca yang sempurna.*
