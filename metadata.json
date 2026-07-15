@@ -1,0 +1,6 @@
+{
+  "name": "PexMod Web",
+  "description": "A web port of the PexMod Hugo theme, running on Vite and React.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

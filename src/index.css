@@ -1,0 +1,333 @@
+@import '../assets/css/core/theme-vars.css';
+@import '../assets/css/core/reset.css';
+@import '../assets/css/core/zmedia.css';
+@import '../assets/css/common/main.css';
+@import '../assets/css/common/header.css';
+@import '../assets/css/common/footer.css';
+@import '../assets/css/common/archive.css';
+@import '../assets/css/common/404.css';
+@import '../assets/css/common/profile-mode.css';
+@import '../assets/css/common/search.css';
+@import '../assets/css/common/terms.css';
+@import '../assets/css/common/post-entry.css';
+@import '../assets/css/common/post-single.css';
+@import '../assets/css/common/md-content.css';
+@import '../assets/css/includes/chroma-styles.css';
+
+:root {
+  --gap: 16px; /* Reduced from 24px for a more compact and elegant layout */
+  --content-gap: 12px; /* Reduced from 20px */
+  --nav-width: 920px; /* Reduced from 1024px */
+  --main-width: 640px; /* Reduced from 720px for sharper and more focused readability */
+  --header-height: 50px; /* Reduced from 60px */
+  --footer-height: 50px; /* Reduced from 60px */
+  --radius: 6px; /* Tighter border-radius for modern minimalist feel */
+  --theme: rgb(255, 255, 255);
+  --entry: rgb(255, 255, 255);
+  --primary: rgb(30, 30, 30);
+  --secondary: rgb(85, 85, 85); /* Perfect PageSpeed contrast ratio */
+  --tertiary: rgb(214, 214, 214);
+  --content: rgb(31, 31, 31);
+  --hljs-bg: rgb(28, 29, 33);
+  --code-bg: rgb(245, 245, 245);
+  --border: rgb(238, 238, 238);
+}
+
+.dark {
+  --theme: rgb(29, 30, 32);
+  --entry: rgb(46, 46, 51);
+  --primary: rgb(218, 218, 219);
+  --secondary: rgb(155, 156, 157);
+  --tertiary: rgb(65, 66, 68);
+  --content: rgb(196, 196, 197);
+  --hljs-bg: rgb(46, 46, 51);
+  --code-bg: rgb(55, 56, 62);
+  --border: rgb(51, 51, 51);
+}
+
+/* Base resets & overflow containment */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--theme);
+  color: var(--primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 14.5px; /* Slightly tighter base size */
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box !important;
+}
+
+/* Ensure no media, code block or raw string overflows viewport on mobile */
+pre, code, pre code, textarea, input, select, iframe {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+pre {
+  overflow-x: auto !important;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  font-size: 13px !important;
+  padding: 10px !important;
+}
+
+/* Micro-compacting outer wrappers */
+.main {
+  max-width: var(--main-width) !important;
+  padding: 20px var(--gap) !important; /* Half of original 40px */
+}
+
+/* Make cards tighter and sleek */
+.post-entry {
+  padding: 16px !important; /* Tighter padding for list items */
+  border-radius: 8px !important; /* Sleeker border radius */
+  margin-bottom: 12px !important;
+}
+
+.post-entry .entry-header h2 {
+  font-size: 20px !important;
+}
+
+.post-entry .entry-content p {
+  font-size: 13.5px !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+/* Compact header */
+.header-nav {
+  height: var(--header-height) !important;
+}
+
+.menu {
+  gap: 14px !important; /* Tighter links gap */
+}
+
+.menu li a {
+  font-size: 13.5px !important;
+}
+
+/* Profile Mode tightening */
+.profile_inner {
+  padding: 20px 0 !important; /* Compact spacing */
+}
+
+.profile_inner h1 {
+  font-size: 32px !important;
+  margin-bottom: 12px !important;
+}
+
+.profile_inner p {
+  font-size: 14px !important;
+  margin-bottom: 12px !important;
+}
+
+.profile img {
+  width: 110px !important;
+  height: 110px !important;
+  margin-bottom: 8px !important;
+}
+
+.buttons {
+  margin-top: 1rem !important;
+}
+
+/* Compact Single Article post view */
+.post-single {
+  padding: 0 !important;
+}
+
+.post-title {
+  font-size: 28px !important; /* Sleeker title size */
+  margin-bottom: 6px !important;
+}
+
+.post-description {
+  font-size: 15px !important;
+  margin-bottom: 10px !important;
+}
+
+/* Custom Responsive Layout Adjustments */
+@media screen and (max-width: 768px) {
+  html, body {
+    font-size: 13.5px !important; /* Even smaller font on mobile */
+  }
+
+  .header-nav {
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.4;
+    padding: 10px var(--gap) !important;
+    gap: 8px !important;
+    height: auto !important; /* Force auto height on mobile to prevent overflow */
+  }
+  
+  .logo {
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 2px;
+  }
+  
+  .menu {
+    width: 100%;
+    justify-content: center;
+    padding: 2px 0;
+    gap: 8px !important;
+    margin: 0;
+    flex-wrap: wrap; /* Ensure menu items wrap beautifully on narrow screens */
+  }
+  
+  .menu li a {
+    padding: 6px 10px !important;
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px !important; /* Compact but responsive touch target */
+  }
+
+  /* Make sure profile page fits nicely on small viewports */
+  .profile {
+    padding: 15px 5px !important;
+    min-height: auto !important;
+  }
+  
+  .profile_inner h1 {
+    font-size: 24px !important; /* Compact title size on mobile */
+  }
+
+  /* Smooth image scaling */
+  .profile img {
+    transform: scale(0.85);
+    margin-bottom: 6px;
+  }
+
+  .main {
+    padding: 10px var(--gap) !important;
+  }
+
+  /* Adjust spacing for single article views on mobile */
+  .post-title {
+    font-size: 22px !important; /* Responsive titles on mobile */
+  }
+
+  .post-header {
+    margin-top: 6px !important;
+    margin-bottom: 16px !important;
+  }
+}
+
+/* Polished responsive grid utility */
+.responsive-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media screen and (max-width: 640px) {
+  .responsive-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Hover transitions and polished states */
+.button, .tag-link-item, .post-entry, .theme-toggle {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tag-link-item {
+  padding: 4px 10px !important;
+  font-size: 12px !important;
+}
+
+.tag-link-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--secondary) !important;
+  background: var(--border) !important;
+}
+
+.button:hover {
+  background: var(--secondary) !important;
+  color: var(--theme) !important;
+  transform: translateY(-1px);
+}
+
+#theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#theme-toggle:hover {
+  background: var(--code-bg);
+}
+
+/* Breadcrumbs mobile readability */
+.breadcrumbs {
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+/* Studio Markdown Editor layout styling */
+@media screen and (max-width: 768px) {
+  .responsive-editor-split {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+/* Prevent dynamic image previews from overflowing small devices */
+@media screen and (max-width: 480px) {
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Custom Toast Animations and Responsiveness */
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .custom-toast-container {
+    right: 16px !important;
+    left: 16px !important;
+    top: 16px !important;
+    bottom: auto !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+
+
