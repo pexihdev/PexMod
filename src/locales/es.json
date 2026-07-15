@@ -124,5 +124,7 @@
   "btnImportMd": "Importar archivo .md / .mdx",
   "importSuccess": "¡Archivo importado con éxito!",
   "importError": "No se pudo leer o analizar el archivo .md / .mdx.",
-  "tagSearchPlaceholder": "Buscar etiquetas..."
+  "tagSearchPlaceholder": "Buscar etiquetas...",
+  "copyCode": "Copiar",
+  "copiedCode": "¡Copiado!"
 }

@@ -26,21 +26,44 @@ const customRenderer = {
       lang = infostring || '';
     }
 
+    let highlighted = '';
+    let hasHighlight = false;
+
     if (lang && hljs.getLanguage(lang)) {
       try {
-        const highlighted = hljs.highlight(text, { language: lang }).value;
-        return `<pre><code class="hljs language-${lang}">${highlighted}</code></pre>`;
+        highlighted = hljs.highlight(text, { language: lang }).value;
+        hasHighlight = true;
       } catch (err) {
         // Fallback to auto
       }
     }
-    try {
-      const highlighted = hljs.highlightAuto(text).value;
-      return `<pre><code class="hljs">${highlighted}</code></pre>`;
-    } catch (err) {
-      // Fallback to plain text
+
+    if (!hasHighlight) {
+      try {
+        highlighted = hljs.highlightAuto(text).value;
+        hasHighlight = true;
+      } catch (err) {
+        // Fallback to plain text
+        highlighted = text;
+      }
     }
-    return `<pre><code>${text}</code></pre>`;
+
+    const escapedCodeAttr = encodeURIComponent(text);
+    const displayLang = lang || 'code';
+    const activeLang = localStorage.getItem('lang') || 'id';
+    const activeTranslations = translations[activeLang] || translations.id || {};
+    const copyLabel = activeTranslations.copyCode || 'Copy';
+
+    return `<div class="code-block-wrapper" style="position: relative; border: 1px solid var(--border); border-radius: var(--radius, 6px); background: var(--hljs-bg, #1c1d21); margin-bottom: 24px; overflow: hidden;">
+  <div class="code-block-header" style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.15); padding: 8px 16px; font-size: 11px; font-family: var(--font-mono, monospace); color: var(--secondary); border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.5px; user-select: none;">
+    <span class="code-lang-label" style="font-weight: 500;">${displayLang}</span>
+    <button class="copy-code-btn" data-code="${escapedCodeAttr}" style="background: none; border: none; padding: 2px 8px; font-family: var(--font-mono, monospace); font-size: 11px; color: var(--secondary); cursor: pointer; transition: color 0.15s ease, background-color 0.15s ease; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span class="copy-text">${copyLabel}</span>
+    </button>
+  </div>
+  <pre style="margin: 0 !important; border: none !important; border-radius: 0 !important; background: transparent !important; padding: 16px !important; overflow-x: auto !important;"><code class="hljs ${lang ? 'language-' + lang : ''}">${highlighted}</code></pre>
+</div>`;
   },
   heading(textOrToken, level, raw, slugger) {
     let text = '';
@@ -300,6 +323,55 @@ function App() {
   useEffect(() => {
     setProfileEditData({ ...profile });
   }, [profile]);
+
+  // Handle click on Copy Code buttons inside Markdown code blocks
+  useEffect(() => {
+    const handleCopyClick = async (e) => {
+      const btn = e.target.closest('.copy-code-btn');
+      if (!btn) return;
+
+      try {
+        let codeText = '';
+        const dataCode = btn.getAttribute('data-code');
+        if (dataCode) {
+          codeText = decodeURIComponent(dataCode);
+        } else {
+          const wrapper = btn.closest('.code-block-wrapper');
+          const codeEl = wrapper ? wrapper.querySelector('pre code') : null;
+          if (codeEl) {
+            codeText = codeEl.textContent;
+          }
+        }
+
+        if (codeText) {
+          await navigator.clipboard.writeText(codeText);
+
+          const textEl = btn.querySelector('.copy-text');
+          const originalText = textEl ? textEl.textContent : '';
+          const successText = translations[lang]?.copiedCode || 'Copied!';
+          
+          if (textEl) {
+            textEl.textContent = successText;
+          }
+          btn.style.color = '#10b981'; // Green color accent
+
+          setTimeout(() => {
+            if (textEl) {
+              textEl.textContent = originalText;
+            }
+            btn.style.color = '';
+          }, 2000);
+        }
+      } catch (err) {
+        console.error('Failed to copy code block:', err);
+      }
+    };
+
+    document.addEventListener('click', handleCopyClick);
+    return () => {
+      document.removeEventListener('click', handleCopyClick);
+    };
+  }, [lang]);
 
   const handleSaveProfile = (e) => {
     e.preventDefault();

@@ -124,5 +124,7 @@
   "btnImportMd": "Impor File .md / .mdx",
   "importSuccess": "File berhasil diimpor!",
   "importError": "Gagal membaca atau mengurai file .md / .mdx.",
-  "tagSearchPlaceholder": "Cari tag..."
+  "tagSearchPlaceholder": "Cari tag...",
+  "copyCode": "Salin",
+  "copiedCode": "Tersalin!"
 }

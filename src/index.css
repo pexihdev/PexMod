@@ -362,4 +362,30 @@ pre {
   transform: translateY(0);
 }
 
+/* Minimalist Markdown Code Block & Copy Button Styling */
+.code-block-wrapper {
+  transition: border-color 0.15s ease;
+}
+
+.code-block-wrapper:hover {
+  border-color: var(--secondary) !important;
+}
+
+.copy-code-btn {
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.copy-code-btn:hover {
+  color: var(--primary) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .copy-code-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.copy-code-btn:active {
+  transform: scale(0.95);
+}
+
 
