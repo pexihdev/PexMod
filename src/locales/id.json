@@ -123,5 +123,6 @@
   "fieldWebsite": "Tautan Situs Web",
   "btnImportMd": "Impor File .md / .mdx",
   "importSuccess": "File berhasil diimpor!",
-  "importError": "Gagal membaca atau mengurai file .md / .mdx."
+  "importError": "Gagal membaca atau mengurai file .md / .mdx.",
+  "tagSearchPlaceholder": "Cari tag..."
 }

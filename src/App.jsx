@@ -11,7 +11,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 import { posts as initialPosts } from './data/posts';
 
-// Configure marked to use highlight.js for rich syntax highlighting
+// Configure marked to use highlight.js for rich syntax highlighting and dynamic header IDs
 const customRenderer = {
   code(codeOrToken, infostring) {
     let text = '';
@@ -39,6 +39,26 @@ const customRenderer = {
       // Fallback to plain text
     }
     return `<pre><code>${text}</code></pre>`;
+  },
+  heading(textOrToken, level, raw, slugger) {
+    let text = '';
+    let depth = level;
+    if (textOrToken && typeof textOrToken === 'object') {
+      text = textOrToken.text || '';
+      depth = textOrToken.depth || level;
+    } else {
+      text = textOrToken || '';
+      depth = level;
+    }
+
+    const cleanText = text.replace(/<[^>]*>/g, '');
+    const slug = cleanText
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .trim()
+      .replace(/[-\s]+/g, '-');
+
+    return `<h${depth} id="${slug}">${text}</h${depth}>`;
   }
 };
 
@@ -162,6 +182,7 @@ function App() {
   const [activePostId, setActivePostId] = useState('');
   const [activeTag, setActiveTag] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [tagSearchQuery, setTagSearchQuery] = useState('');
   const [showTopLink, setShowTopLink] = useState(false);
 
   // Custom posts state (merged with preloaded posts)
@@ -231,6 +252,8 @@ function App() {
   });
   const [copiedUrlIndex, setCopiedUrlIndex] = useState(null);
   const [copiedPostId, setCopiedPostId] = useState(null);
+  const [postCopiedRaw, setPostCopiedRaw] = useState(false);
+  const [postCopiedLink, setPostCopiedLink] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [tgSearchQuery, setTgSearchQuery] = useState('');
   const [tgFilterType, setTgFilterType] = useState('all'); // 'all' | 'image' | 'video' | 'document'
@@ -649,6 +672,44 @@ function App() {
     } catch (err) {
       return { __html: text || '' };
     }
+  };
+
+  // Extract h2 and h3 headings from Markdown text
+  const getHeadings = (content) => {
+    if (!content) return [];
+    const lines = content.split('\n');
+    const headings = [];
+    
+    lines.forEach((line) => {
+      // Match h2 and h3 headings: "## My Heading" or "### My Heading"
+      const match = line.match(/^(#{2,3})\s+(.+)$/);
+      if (match) {
+        const level = match[1].length; // 2 or 3
+        let text = match[2].trim();
+        if (text.endsWith('#')) {
+          text = text.replace(/#+$/, '').trim();
+        }
+        
+        // Strip markdown formatting symbols
+        const cleanText = text
+          .replace(/[*_`]/g, '')
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+          
+        const slug = cleanText
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .trim()
+          .replace(/[-\s]+/g, '-');
+          
+        headings.push({
+          level,
+          text: cleanText,
+          slug
+        });
+      }
+    });
+    
+    return headings;
   };
 
   // MTProto Telegram Connection flow
@@ -1284,13 +1345,10 @@ function App() {
 
         {/* VIEW 3: SINGLE POST READING VIEW */}
         {view === 'post' && currentPost && (
-          <motion.article 
+          <article 
             className="post-single" 
             id="single-post-view-container"
             key={`post-${currentPost.id}`}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
           >
             <header className="post-header" id="single-post-header" style={{marginBottom: '30px'}}>
               <div className="breadcrumbs" id="single-post-breadcrumbs" style={{fontSize: '13px', color: 'var(--secondary)', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '6px'}}>
@@ -1308,35 +1366,163 @@ function App() {
               <div className="post-description" style={{color: 'var(--secondary)', fontSize: '17px', fontStyle: 'italic', marginBottom: '15px', lineHeight: '1.5'}} id="single-post-desc">
                 {currentPost.description}
               </div>
-              <div className="post-meta" style={{display: 'flex', flexWrap: 'wrap', gap: '12px', fontSize: '12px', color: 'var(--secondary)', alignItems: 'center', fontFamily: 'var(--font-mono, monospace)'}} id="single-post-meta">
-                <span style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}><Calendar size={13} aria-hidden="true" /> {currentPost.formattedDate}</span>
-                <span>&middot;</span>
-                <span style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}><Clock size={13} aria-hidden="true" /> {getReadingTime(currentPost)}</span>
-                <span>&middot;</span>
-                <span style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}><User size={13} aria-hidden="true" /> {currentPost.author}</span>
+              <div className="post-meta" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', fontSize: '12px', color: 'var(--secondary)', fontFamily: 'var(--font-mono, monospace)', borderBottom: '1px solid var(--border)', paddingBottom: '15px'}} id="single-post-meta">
+                <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '12px'}}>
+                  <span style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}><Calendar size={13} aria-hidden="true" /> {currentPost.formattedDate}</span>
+                  <span>&middot;</span>
+                  <span style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}><Clock size={13} aria-hidden="true" /> {getReadingTime(currentPost)}</span>
+                  <span>&middot;</span>
+                  <span style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}><User size={13} aria-hidden="true" /> {currentPost.author}</span>
+                </div>
+                
+                <div style={{display: 'flex', alignItems: 'center', gap: '8px'}} className="post-copy-group">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(currentPost.content).then(() => {
+                        setPostCopiedRaw(true);
+                        addToast(
+                          lang === 'id' ? 'Salinan naskah berhasil disalin ke clipboard.' :
+                          lang === 'es' ? 'Texto copiado al portapapeles.' :
+                          'Raw content copied to clipboard.', 
+                          'success'
+                        );
+                        setTimeout(() => setPostCopiedRaw(false), 2000);
+                      });
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '11px',
+                      background: 'var(--code-bg)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '4px',
+                      padding: '4px 8px',
+                      cursor: 'pointer',
+                      color: 'var(--secondary)',
+                      fontFamily: 'var(--font-mono, monospace)',
+                      transition: 'all 0.15s ease'
+                    }}
+                    title={
+                      lang === 'id' ? 'Salin isi tulisan mentah (Markdown)' :
+                      lang === 'es' ? 'Copiar texto sin formato (Markdown)' :
+                      'Copy raw markdown text'
+                    }
+                    className="copy-raw-btn"
+                  >
+                    {postCopiedRaw ? <Check size={11} style={{color: '#10b981'}} /> : <FileText size={11} />}
+                    <span>{postCopiedRaw ? (lang === 'id' ? 'Tersalin' : lang === 'es' ? 'Copiado' : 'Copied') : (lang === 'id' ? 'Salin Naskah' : lang === 'es' ? 'Copiar Texto' : 'Copy Raw')}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const shareUrl = `${window.location.origin}${window.location.pathname}?post=${currentPost.id}`;
+                      navigator.clipboard.writeText(shareUrl).then(() => {
+                        setPostCopiedLink(true);
+                        addToast(translations[lang].copiedLink, 'success');
+                        setTimeout(() => setPostCopiedLink(false), 2000);
+                      });
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '11px',
+                      background: 'var(--code-bg)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '4px',
+                      padding: '4px 8px',
+                      cursor: 'pointer',
+                      color: 'var(--secondary)',
+                      fontFamily: 'var(--font-mono, monospace)',
+                      transition: 'all 0.15s ease'
+                    }}
+                    title={
+                      lang === 'id' ? 'Salin tautan langsung' :
+                      lang === 'es' ? 'Copiar enlace directo' :
+                      'Copy direct link'
+                    }
+                    className="copy-link-btn"
+                  >
+                    {postCopiedLink ? <Check size={11} style={{color: '#10b981'}} /> : <Link size={11} />}
+                    <span>{postCopiedLink ? (lang === 'id' ? 'Tersalin' : lang === 'es' ? 'Copiado' : 'Copied') : (lang === 'id' ? 'Salin Tautan' : lang === 'es' ? 'Copiar Enlace' : 'Copy Link')}</span>
+                  </button>
+                </div>
               </div>
             </header>
 
             {/* Table Of Contents */}
-            <details className="toc" open style={{background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: '8px', padding: '16px', marginBottom: '32px'}} id="single-post-toc">
-              <summary style={{fontWeight: '600', cursor: 'pointer', outline: 'none', userSelect: 'none', fontSize: '15px', color: 'var(--primary)'}}>
-                <span>{translations[lang].tableOfContents}</span>
-              </summary>
-              <div className="inner" style={{marginTop: '10px', paddingLeft: '10px'}}>
-                <ul style={{listStyleType: 'none', margin: 0, paddingLeft: '10px', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '14px'}}>
-                  <li>
-                    <a href="#welcome-header" style={{color: 'var(--secondary)', textDecoration: 'none'}} onClick={(e) => { e.preventDefault(); document.getElementById('welcome-header')?.scrollIntoView({behavior: 'smooth'}); }}>
-                      {translations[lang].tocIntro}
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#details-header" style={{color: 'var(--secondary)', textDecoration: 'none'}} onClick={(e) => { e.preventDefault(); document.getElementById('details-header')?.scrollIntoView({behavior: 'smooth'}); }}>
-                      {translations[lang].tocTech}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </details>
+            {(() => {
+              const headings = getHeadings(currentPost.content);
+              if (headings.length === 0) return null;
+              
+              return (
+                <details 
+                  className="toc" 
+                  open={headings.length <= 10} 
+                  style={{
+                    background: 'var(--code-bg)', 
+                    border: '1px solid var(--border)', 
+                    borderRadius: '8px', 
+                    padding: '16px', 
+                    marginBottom: '32px'
+                  }} 
+                  id="single-post-toc"
+                >
+                  <summary style={{
+                    fontWeight: '600', 
+                    cursor: 'pointer', 
+                    outline: 'none', 
+                    userSelect: 'none', 
+                    fontSize: '15px', 
+                    color: 'var(--primary)'
+                  }}>
+                    <span>{translations[lang].tableOfContents}</span>
+                  </summary>
+                  <div className="inner" style={{marginTop: '12px', borderLeft: '1px solid var(--border)', marginLeft: '4px', paddingLeft: '12px'}}>
+                    <ul style={{listStyleType: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '14px'}}>
+                      {headings.map((heading, idx) => (
+                        <li 
+                          key={idx} 
+                          style={{
+                            paddingLeft: heading.level === 3 ? '16px' : '0px'
+                          }}
+                        >
+                          <a 
+                            href={`#${heading.slug}`} 
+                            style={{
+                              color: 'var(--secondary)', 
+                              textDecoration: 'none',
+                              fontSize: heading.level === 3 ? '13px' : '14px',
+                              transition: 'color 0.15s ease',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px'
+                            }} 
+                            onMouseEnter={(e) => e.target.style.color = 'var(--primary)'}
+                            onMouseLeave={(e) => e.target.style.color = 'var(--secondary)'}
+                            onClick={(e) => { 
+                              e.preventDefault(); 
+                              document.getElementById(heading.slug)?.scrollIntoView({behavior: 'smooth'}); 
+                            }}
+                          >
+                            <span style={{
+                              color: 'var(--border)', 
+                              fontFamily: 'var(--font-mono, monospace)', 
+                              fontSize: '11px',
+                              userSelect: 'none'
+                            }}>
+                              {heading.level === 3 ? '↳' : '•'}
+                            </span>
+                            <span>{heading.text}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </details>
+              );
+            })()}
 
             {/* Post Content parsed from Markdown */}
             <div 
@@ -1475,7 +1661,7 @@ function App() {
                 </button>
               </div>
             </footer>
-          </motion.article>
+          </article>
         )}
 
         {/* VIEW 4: ARCHIVES VIEW */}
@@ -1632,54 +1818,83 @@ function App() {
               </p>
             </div>
 
-            <ul className="terms-tags" style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '12px',
-              listStyle: 'none',
-              padding: 0,
-              marginTop: '28px'
-            }} id="tags-cloud-list">
-              {getTagsWithCounts().map(({ name, count }) => (
-                <li key={name} id={`tag-cloud-item-${name}`}>
-                  <a 
-                    href={`#tag-${name}`} 
-                    onClick={(e) => { e.preventDefault(); handleTagClick(name); }}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      background: 'var(--code-bg)',
-                      border: '1px solid var(--border)',
-                      padding: '8px 16px',
-                      borderRadius: '30px',
-                      fontSize: '14px',
-                      color: 'var(--primary)',
-                      fontWeight: '500',
-                      transition: 'transform 0.2s ease, border-color 0.2s'
-                    }}
-                    className="tag-link-item"
-                    id={`tag-cloud-link-${name}`}
-                  >
-                    <Tag size={12} aria-hidden="true" />
-                    <span>{name}</span>
-                    <span style={{
-                      background: 'var(--border)', 
-                      borderRadius: '50%', 
-                      fontSize: '11px', 
-                      width: '18px', 
-                      height: '18px', 
-                      display: 'inline-flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'center',
-                      color: 'var(--secondary)'
-                    }}>
-                      {count}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="tag-filter-box" style={{ marginTop: '20px', marginBottom: '24px' }} id="tag-filter-area">
+              <input
+                type="search"
+                placeholder={translations[lang].tagSearchPlaceholder || "Cari tag..."}
+                value={tagSearchQuery}
+                onChange={(e) => setTagSearchQuery(e.target.value)}
+                style={{
+                  padding: '10px 14px',
+                  fontSize: '14px',
+                  width: '100%',
+                  maxWidth: '320px',
+                  outline: 'none',
+                  background: 'var(--code-bg)',
+                  color: 'var(--primary)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '6px',
+                  fontFamily: 'var(--font-mono, monospace)',
+                  transition: 'border-color 0.15s ease'
+                }}
+                id="tag-search-input"
+              />
+            </div>
+
+            {getTagsWithCounts().filter(({ name }) => 
+              name.toLowerCase().includes(tagSearchQuery.toLowerCase().trim())
+            ).length === 0 ? (
+              <p style={{ color: 'var(--secondary)', fontSize: '14px', marginTop: '20px', fontFamily: 'var(--font-mono, monospace)' }}>
+                {lang === 'id' ? 'Tidak ada tag yang cocok.' : lang === 'es' ? 'No se encontraron etiquetas.' : 'No matching tags found.'}
+              </p>
+            ) : (
+              <ul className="terms-tags" style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '12px',
+                listStyle: 'none',
+                padding: 0,
+                marginTop: '16px'
+              }} id="tags-cloud-list">
+                {getTagsWithCounts()
+                  .filter(({ name }) => name.toLowerCase().includes(tagSearchQuery.toLowerCase().trim()))
+                  .map(({ name, count }) => (
+                    <li key={name} id={`tag-cloud-item-${name}`}>
+                      <a 
+                        href={`#tag-${name}`} 
+                        onClick={(e) => { e.preventDefault(); handleTagClick(name); }}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          background: 'var(--code-bg)',
+                          border: '1px solid var(--border)',
+                          padding: '8px 16px',
+                          borderRadius: '30px',
+                          fontSize: '14px',
+                          color: 'var(--primary)',
+                          fontWeight: '500',
+                          transition: 'transform 0.2s ease, border-color 0.2s'
+                        }}
+                        className="tag-link-item"
+                        id={`tag-cloud-link-${name}`}
+                      >
+                        <Tag size={12} aria-hidden="true" />
+                        <span>{name}</span>
+                        <span style={{
+                          fontSize: '11px', 
+                          fontFamily: 'var(--font-mono, monospace)',
+                          color: 'var(--secondary)',
+                          marginLeft: '3px',
+                          fontWeight: 'normal'
+                        }}>
+                          ({count})
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            )}
           </motion.div>
         )}
 

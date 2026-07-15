@@ -330,4 +330,36 @@ pre {
   }
 }
 
+/* Pure CSS Page Transition Fade-In for Article View */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.post-single {
+  animation: pageFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+/* Elegant Hover States for Copy Buttons */
+.copy-raw-btn, .copy-link-btn {
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.copy-raw-btn:hover, .copy-link-btn:hover {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  background: var(--border) !important;
+  transform: translateY(-1px);
+}
+
+.copy-raw-btn:active, .copy-link-btn:active {
+  transform: translateY(0);
+}
+
 

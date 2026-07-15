@@ -123,5 +123,6 @@
   "fieldWebsite": "Enlace de Sitio Web",
   "btnImportMd": "Importar archivo .md / .mdx",
   "importSuccess": "¡Archivo importado con éxito!",
-  "importError": "No se pudo leer o analizar el archivo .md / .mdx."
+  "importError": "No se pudo leer o analizar el archivo .md / .mdx.",
+  "tagSearchPlaceholder": "Buscar etiquetas..."
 }

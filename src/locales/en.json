@@ -123,5 +123,6 @@
   "fieldWebsite": "Website Link",
   "btnImportMd": "Import .md / .mdx File",
   "importSuccess": "File imported successfully!",
-  "importError": "Failed to read or parse .md / .mdx file."
+  "importError": "Failed to read or parse .md / .mdx file.",
+  "tagSearchPlaceholder": "Search tags..."
 }
