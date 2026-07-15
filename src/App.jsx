@@ -11,6 +11,8 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 import { posts as initialPosts } from './data/posts';
 
+import DOMPurify from 'dompurify';
+
 // Configure marked to use highlight.js for rich syntax highlighting and dynamic header IDs
 const customRenderer = {
   code(codeOrToken, infostring) {
@@ -665,10 +667,12 @@ function App() {
   const prevPost = currentIndex > 0 ? localizedPosts[currentIndex - 1] : null;
   const nextPost = currentIndex < localizedPosts.length - 1 ? localizedPosts[currentIndex + 1] : null;
 
-  // Initialize marked parser for markdown parsing
+  // Initialize marked parser for markdown parsing with security sanitization
   const renderMarkdown = (text) => {
     try {
-      return { __html: marked.parse(text || '') };
+      const rawHtml = marked.parse(text || '');
+      const cleanHtml = DOMPurify.sanitize(rawHtml);
+      return { __html: cleanHtml };
     } catch (err) {
       return { __html: text || '' };
     }
