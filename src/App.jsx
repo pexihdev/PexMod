@@ -565,6 +565,45 @@ function App() {
     return localizedPosts.filter(p => p.tags && p.tags.includes(activeTag));
   };
 
+  // Highlight search keywords in text with a soft faded background
+  const highlightText = (text, query) => {
+    if (!text) return '';
+    if (!query || !query.trim()) return text;
+    
+    const words = query
+      .trim()
+      .split(/\s+/)
+      .filter(word => word.length > 0)
+      .map(word => word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+      
+    if (words.length === 0) return text;
+    
+    const regex = new RegExp(`(${words.join('|')})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, i) => {
+      const isMatch = words.some(word => new RegExp(`^${word}$`, 'i').test(part));
+      return isMatch ? (
+        <mark
+          key={i}
+          style={{
+            background: 'rgba(234, 179, 8, 0.22)',
+            color: 'inherit',
+            borderRadius: '2px',
+            padding: '1px 3px',
+            margin: '0 -1px',
+            fontWeight: '500'
+          }}
+          id={`search-highlight-${i}`}
+        >
+          {part}
+        </mark>
+      ) : (
+        part
+      );
+    });
+  };
+
   // Search filter
   const getSearchResults = () => {
     if (!searchQuery.trim()) return [];
@@ -1565,7 +1604,7 @@ function App() {
                   >
                     <div style={{display: 'flex', flexDirection: 'column', gap: '4px'}}>
                       <span style={{fontWeight: '600', color: 'var(--primary)', fontSize: '16px'}}>{post.title}</span>
-                      <span style={{color: 'var(--secondary)', fontSize: '13px'}}>{post.description}</span>
+                      <span style={{color: 'var(--secondary)', fontSize: '13px'}}>{highlightText(post.description, searchQuery)}</span>
                     </div>
                     <span style={{fontSize: '12px', color: 'var(--secondary)', whiteSpace: 'nowrap'}} className="archive-meta">
                       {post.formattedDate}
